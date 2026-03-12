@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import gameListModel from "../models/gameListModel.js";
 import GameTransaction from "../models/GameTransaction.js";
-import Game from "../models/GameModel.js";
+import Game from "../models/gameModel.js";
 
 export const getGameDetails = async (req, res) => {
 
