@@ -131,7 +131,7 @@ export const createUser = async (req, res, next) => {
 
              // Generate token
         const token = jwt.sign(
-            { userId: user._id, email: user.email, role: user.role },
+            { userId: user._id, email: user.email, role: user.role, prefix:user.prefix },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );
@@ -165,7 +165,7 @@ export const loginUser = async (req, res, next) => {
         if (!isPasswordValid) return res.status(401).json({ error: 'invalid password' });
         
         const token = jwt.sign(
-            { userId: user._id, email: user.email, role: user.role },
+            { userId: user._id, email: user.email, role: user.role, prefix:user.prefix },
             process.env.JWT_SECRET,
             { expiresIn: '24h' }
         );

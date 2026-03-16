@@ -27,6 +27,7 @@ const CheckoutSuccess = lazy(() => import("./pages/CheckoutSuccess"));
 const AccessProviders = lazy(() => import("./pages/AccessProviders"));
 const Docs = lazy(() => import("./pages/Doc"));
 const Cricket = lazy(() => import("./pages/Cricket"));
+const GGRHistory = lazy(()=> import("./pages/GGRHistory"))
 
 
 
@@ -67,6 +68,7 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/checkout/success" element={<CheckoutSuccess />} />
+                <Route path="/gg-history" element={<GGRHistory />} />
                 
                 <Route path="/cricket" element={<Cricket/>} />
                 <Route path="/accessproviders" element={<AccessProviders />} />

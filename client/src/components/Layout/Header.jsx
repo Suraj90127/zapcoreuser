@@ -99,7 +99,7 @@ const Header = () => {
     { path: '/providers', label: 'Providers', icon: <SiPrdotco className="w-4 h-4 md:w-4 md:h-4 lg:w-[18px] lg:h-[18px]" /> },
     { path: '/games', label: 'Games', icon: <GiGamepad className="w-4 h-4 md:w-4 md:h-4 lg:w-[18px] lg:h-[18px]" /> },
     { path: '/cricket', label: 'Cricket', icon: <GiCricketBat className="w-4 h-4 md:w-4 md:h-4 lg:w-[18px] lg:h-[18px]" /> },
-    { path: '/docs', label: 'Docs', icon: <FiFileText className="w-4 h-4 md:w-4 md:h-4 lg:w-[18px] lg:h-[18px]" /> },
+    // { path: '/docs', label: 'Docs', icon: <FiFileText className="w-4 h-4 md:w-4 md:h-4 lg:w-[18px] lg:h-[18px]" /> },
  
   ];
 

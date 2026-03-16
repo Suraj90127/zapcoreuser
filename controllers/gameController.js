@@ -2,6 +2,7 @@ import crypto from "crypto";
 import gameListModel from "../models/gameListModel.js";
 import GameTransaction from "../models/GameTransaction.js";
 import Game from "../models/gameModel.js";
+import GGRLog from "../models/GGRLog.js";
 
 export const getGameDetails = async (req, res) => {
 
@@ -154,6 +155,57 @@ export const showBetHistory = async (req, res) => {
     return res.status(500).json({
       status: false,
       message: "Server error"
+    });
+  }
+};
+
+
+
+export const getGGRHistory = async (req, res) => {
+  const user = req.user;
+  const prefix = user.prefix;
+
+  // console.log("user",user);
+  
+
+  try {
+    const { startDate, endDate, page = 1, limit = 10 } = req.query;
+
+    const currentPage = parseInt(page);
+    const perPage = parseInt(limit);
+    const skip = (currentPage - 1) * perPage;
+
+    let filter = { prefix };
+
+    // Date filter
+    if (startDate && endDate) {
+      filter.ggr_date = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+
+    const totalRecords = await GGRLog.countDocuments(filter);
+
+    const history = await GGRLog.find(filter)
+      .sort({ ggr_date: -1 })
+      .skip(skip)
+      .limit(perPage);
+
+    return res.status(200).json({
+      success: true,
+      page: currentPage,
+      limit: perPage,
+      totalRecords,
+      totalPages: Math.ceil(totalRecords / perPage),
+      data: history,
+    });
+
+  } catch (error) {
+    console.error("GGR History Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
     });
   }
 };

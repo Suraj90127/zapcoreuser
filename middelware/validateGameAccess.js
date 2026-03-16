@@ -230,7 +230,7 @@ export const lunchGameValidate = async (req, res, next) => {
     ================================ */
     const requestIp = getClientIp(req);
 
-    // console.log("requestIp",requestIp);
+    // // console.log("requestIp",requestIp);
     
 
     if (!validateIp(user.ipv4_address, requestIp)) {
@@ -308,7 +308,7 @@ export const cricketGameValidate = async (req, res, next) => {
     ================================= */
 
        const requestDomain = req.headers["x-domain"];
-console.log(requestDomain);
+      console.log(requestDomain);
 
       if (!user.domain) {
         return res.status(403).json({

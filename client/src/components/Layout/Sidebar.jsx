@@ -28,6 +28,7 @@ const Sidebar = () => {
         { icon: <FiUsers />, label: 'Deposit', path: '/deposit' },
         { icon: <FiUsers />, label: 'Deposit History', path: '/deposit-history ' },
         { icon: <FiUsers />, label: 'Bet History', path: '/bet-history' },
+        { icon: <FiUsers />, label: 'GGR History', path: '/gg-history' },
 
       ]
     },
