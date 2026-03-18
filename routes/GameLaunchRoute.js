@@ -15,7 +15,7 @@ router.post("/Userbalance", lunchGameValidate, getUserBalanceLocal )
 // router.post("/set-userbalance", setUserBalanceLocal )
 router.post("/Setbalance", lunchGameValidate, setUserBalanceLocal )
 
-router.post("/history", lunchGameValidate, getBetHistory)
+router.post("/history", getBetHistory)
 // router.post("/huidu-seamless",  handleSeamlessCallback )
 
 router.post("/huidu/seamless-callback", handleSeamlessCallback);
