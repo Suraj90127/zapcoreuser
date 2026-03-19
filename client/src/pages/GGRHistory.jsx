@@ -59,11 +59,11 @@ const GGRHistory = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('ggr');
 
-  const { ggrHistory, ggrPage, ggrTotalPages, loading } = useSelector(
+  const { ggrHistory,totalGgr12PercentSum,totalLossSum, ggrPage, ggrTotalPages, loading } = useSelector(
     (state) => state.games
   );
 
-  console.log("ggrHistory", ggrHistory);
+  console.log("ggrHistory", totalGgr12PercentSum,totalLossSum);
 
   useEffect(() => {
     fetchData(1);
@@ -72,7 +72,7 @@ const GGRHistory = () => {
   const fetchData = (page, filters = {}) => {
     dispatch(getGGRHistory({ 
       page, 
-      limit: 10,
+      limit: 20,
       ...dateRange,
       ...filters 
     }));
@@ -382,8 +382,8 @@ const GGRHistory = () => {
             <div className={`p-4 rounded-xl ${tc.cardBg} border ${tc.border} hover:scale-105 transition-all`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-sm ${tc.textSecondary}`}>Total GGR</p>
-                  <p className={`text-2xl font-bold ${tc.text}`}>₹{stats.totalGGR.toLocaleString()}</p>
+                  <p className={`text-sm ${tc.textSecondary}`}>Total bet Amount</p>
+                  <p className={`text-2xl font-bold ${tc.text}`}>₹{totalLossSum}</p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
                   <GiMoneyStack className="w-6 h-6 text-green-500" />
@@ -406,8 +406,9 @@ const GGRHistory = () => {
             <div className={`p-4 rounded-xl ${tc.cardBg} border ${tc.border} hover:scale-105 transition-all`}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className={`text-sm ${tc.textSecondary}`}>Win Rate</p>
-                  <p className={`text-2xl font-bold ${tc.text}`}>{stats.winRate}%</p>
+                  
+                  <p className={`text-sm ${tc.textSecondary}`}>Total GGR of 12%</p>
+                  <p className={`text-2xl font-bold ${tc.text}`}>{totalGgr12PercentSum}</p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
                   <FiPieChart className="w-6 h-6 text-purple-500" />
@@ -530,7 +531,7 @@ const GGRHistory = () => {
                       
                         <td className="px-4 py-3 text-sm">
                           <span className="font-medium text-red-600 dark:text-reg-400">
-                            ₹{item.ggr_12_percent.toLocaleString()}
+                            ₹{item.ggr_12_percent }
                           </span>
                         </td>
                         <td className="px-4 py-3 text-sm">
@@ -609,8 +610,8 @@ const GGRHistory = () => {
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-2 border-t border-gray-200 dark:border-gray-700">
-                      <span className={tc.textSecondary}>Win Rate</span>
-                      <span className="font-bold text-blue-500">{stats.winRate}%</span>
+                      <span className={tc.textSecondary}>Total GGR of 12%</span>
+                      <span className="font-bold text-blue-500">{totalGgr12PercentSum}%</span>
                     </div>
                   </div>
                 </div>
@@ -622,8 +623,8 @@ const GGRHistory = () => {
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center">
-                      <span className={tc.textSecondary}>Total GGR</span>
-                      <span className="font-bold text-blue-500">₹{stats.totalGGR.toLocaleString()}</span>
+                      <span className={tc.textSecondary}>Total Loss bet amount</span>
+                      <span className="font-bold text-blue-500">₹{totalLossSum}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className={tc.textSecondary}>Average GGR/Day</span>

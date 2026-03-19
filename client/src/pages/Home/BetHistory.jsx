@@ -89,9 +89,9 @@ const BetHistory = () => {
         bet.bet_amount,
         bet.win_amount,
         (bet.win_amount - bet.bet_amount),
-        bet.win_amount > bet.bet_amount ? 'Win' : bet.win_amount > 0 ? 'Partial Win' : 'Loss',
+        bet.status === 1 ? 'Win' : 'Loss',
         bet.game_round,
-        bet.status === 1 ? 'Completed' : 'Pending'
+        // bet.status === 1 ? 'Completed' : 'Pending'
       ])
     ].map(row => row.join(',')).join('\n');
 
@@ -137,10 +137,9 @@ const BetHistory = () => {
     const totalWagered = filteredBets.reduce((sum, bet) => sum + bet.bet_amount, 0);
     const totalWon = filteredBets.reduce((sum, bet) => sum + bet.win_amount, 0);
     const lossAmount = filteredBets.reduce(
-  (sum, bet) => bet.status === 0 ? sum + bet.bet_amount : sum,
+      (sum, bet) => (bet.status === 0 || bet.status === 2 ? sum + bet.bet_amount : sum),
       0
     );
-
     const lossGgr = lossAmount*0.12
 // 🧠 Aur Cle
     // console.log("lossAmount",lossAmount);
@@ -185,7 +184,7 @@ const BetHistory = () => {
       case 0: // Loss
         return theme === 'dark' ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600';
       case 2: // No-bet/Pending
-        return theme === 'dark' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-yellow-100 text-yellow-600';
+        return theme === 'dark' ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600';
       default:
         return theme === 'dark' ? 'bg-gray-500/20 text-gray-400' : 'bg-gray-100 text-gray-600';
     }
@@ -669,7 +668,7 @@ const BetHistory = () => {
                           <td className="px-6 py-4">
                             <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(bet.status)}`}>
                               {bet.win_amount > 0 ? 'WIN' : 
-                               bet.status === 2 ? 'PENDING' : 'LOSS'}
+                               bet.status === 1 ? 'WIN' : 'LOSS'}
                             </span>
                           </td>
                           <td className="px-6 py-4">
@@ -957,7 +956,7 @@ const BetHistory = () => {
                   <p className={`text-sm ${tc.textMuted} mb-1`}>Status</p>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(selectedBet.status)}`}>
                     {selectedBet.win_amount > 0 ? 'WIN' : 
-                     selectedBet.status === 2 ? 'PENDING' : 'LOSS'}
+                     selectedBet.status === 1 ? 'WIN' : 'LOSS'}
                   </span>
                 </div>
               </div>

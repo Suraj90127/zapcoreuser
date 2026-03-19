@@ -115,6 +115,8 @@ const gameSlice = createSlice({
     games: [],
     totalGames: 0,
     currentPage: 1,
+    totalGgr12PercentSum:null,
+    totalLossSum:null,
     perPage: 10,
     gameTypes: [],
     providers: [],
@@ -176,6 +178,8 @@ const gameSlice = createSlice({
       .addCase(getGGRHistory.fulfilled, (state, action) => {
         state.loading = false;
         state.ggrHistory = action.payload.data;
+        state.totalGgr12PercentSum=action.payload.totalGgr12PercentSum
+        state.totalLossSum=action.payload.totalLossSum
         state.ggrPage = action.payload.page;
         state.ggrTotalPages = action.payload.totalPages;
       })

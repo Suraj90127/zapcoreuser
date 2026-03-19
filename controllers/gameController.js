@@ -161,18 +161,16 @@ export const showBetHistory = async (req, res) => {
 
 
 
+
 export const getGGRHistory = async (req, res) => {
   const user = req.user;
   const prefix = user.prefix;
 
-  // console.log("user",user);
-  
-
   try {
     const { startDate, endDate, page = 1, limit = 10 } = req.query;
 
-    const currentPage = parseInt(page);
-    const perPage = parseInt(limit);
+    const currentPage = parseInt(page, 10);
+    const perPage = parseInt(limit, 10);
     const skip = (currentPage - 1) * perPage;
 
     let filter = { prefix };
@@ -183,6 +181,10 @@ export const getGGRHistory = async (req, res) => {
         $gte: startDate,
         $lte: endDate,
       };
+    } else if (startDate) {
+      filter.ggr_date = { $gte: startDate };
+    } else if (endDate) {
+      filter.ggr_date = { $lte: endDate };
     }
 
     const totalRecords = await GGRLog.countDocuments(filter);
@@ -192,15 +194,27 @@ export const getGGRHistory = async (req, res) => {
       .skip(skip)
       .limit(perPage);
 
+    const totals = await GGRLog.aggregate([
+      { $match: filter },
+      {
+        $group: {
+          _id: null,
+          totalGgr12PercentSum: { $sum: { $ifNull: ["$ggr_12_percent", 0] } },
+          totalLossSum: { $sum: { $ifNull: ["$total_loss", 0] } },
+        },
+      },
+    ]);
+
     return res.status(200).json({
       success: true,
       page: currentPage,
       limit: perPage,
       totalRecords,
       totalPages: Math.ceil(totalRecords / perPage),
+      totalGgr12PercentSum: totals[0]?.totalGgr12PercentSum || 0,
+      totalLossSum: totals[0]?.totalLossSum || 0,
       data: history,
     });
-
   } catch (error) {
     console.error("GGR History Error:", error);
     return res.status(500).json({
