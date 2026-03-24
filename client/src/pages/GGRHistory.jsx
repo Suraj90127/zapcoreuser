@@ -58,7 +58,7 @@ const GGRHistory = () => {
   });
   const [showFilters, setShowFilters] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('ggr');
-
+ const { user } = useSelector((state) => state.auth);
   const { ggrHistory,totalGgr12PercentSum,totalLossSum, ggrPage, ggrTotalPages, loading } = useSelector(
     (state) => state.games
   );
@@ -407,7 +407,7 @@ const GGRHistory = () => {
               <div className="flex items-center justify-between">
                 <div>
                   
-                  <p className={`text-sm ${tc.textSecondary}`}>Total GGR of 12%</p>
+                  <p className={`text-sm ${tc.textSecondary}`}>Total GGR of {user.ggr_coust} %</p>
                   <p className={`text-2xl font-bold ${tc.text}`}>{totalGgr12PercentSum}</p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">

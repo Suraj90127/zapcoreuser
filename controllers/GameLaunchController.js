@@ -788,9 +788,6 @@ export const getBetHistory = async (req, res) => {
   }
 };
 
-
-
-
 // controllers/seamlessCallbackController.js
 
 export const handleSeamlessCallback = async (req, res) => {
@@ -1052,7 +1049,7 @@ export const processSingleGGR = async (
 
 
 export const handleBetLossGGR = async (req, res) => {
-  console.log("ssss");
+  // console.log("ssss");
   
   try {
     /* ================= TIME SETUP ================= */

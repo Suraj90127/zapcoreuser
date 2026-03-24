@@ -20,7 +20,9 @@ import "react-datepicker/dist/react-datepicker.css";
 const BetHistory = () => {
   const dispatch = useDispatch();
   const { theme } = useTheme();
-  
+    const { user } = useSelector((state) => state.auth);
+    // console.log("user",user);
+    
   // Redux State
   const { 
     betHistory, 
@@ -136,11 +138,13 @@ const BetHistory = () => {
     const totalBets = filteredBets.length;
     const totalWagered = filteredBets.reduce((sum, bet) => sum + bet.bet_amount, 0);
     const totalWon = filteredBets.reduce((sum, bet) => sum + bet.win_amount, 0);
+    console.log("filteredBets",filteredBets);
+    
     const lossAmount = filteredBets.reduce(
       (sum, bet) => (bet.status === 0 || bet.status === 2 ? sum + bet.bet_amount : sum),
       0
     );
-    const lossGgr = lossAmount*0.12
+    const lossGgr = lossAmount*(user.ggr_coust/100)
 // 🧠 Aur Cle
     // console.log("lossAmount",lossAmount);
     
@@ -512,7 +516,7 @@ const BetHistory = () => {
                 </div>
               </div>
               <p className={`text-2xl font-bold ${tc.text}`}>{formatCurrency(stats.lossGgr)}</p>
-              <p className={`text-sm ${tc.textSecondary}`}>Loass GGR of 12 %</p>
+              <p className={`text-sm ${tc.textSecondary}`}>Loass GGR of {user.ggr_coust} %</p>
             </div>
 
             <div className={`${tc.cardBg} border ${tc.border} rounded-xl p-6 hover:scale-105 transition-all`}>
