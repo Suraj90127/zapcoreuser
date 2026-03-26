@@ -34,6 +34,7 @@ const AccessProviders = () => {
   // Redux state
   const { activeProviders, loading, error } = useSelector((state) => state.providers);
   const { user } = useSelector((state) => state.auth);
+  console.log("activeProviders",activeProviders);
   
   // Local state
   const [viewMode, setViewMode] = useState('grid');
@@ -46,6 +47,9 @@ const AccessProviders = () => {
   
   // Mock access data - In real app, this would come from API
   const [accessData, setAccessData] = useState([]);
+
+  console.log("accessData",accessData);
+  
 
   // Initialize
   useEffect(() => {
@@ -142,19 +146,21 @@ const AccessProviders = () => {
     try {
       await dispatch(toggleProviderStatus(providerName)).unwrap();
       toast.success('Provider status updated!', { theme });
+
+       dispatch(getActiveProviders());
       
       // Update local state
-      setAccessData(prev => prev.map(provider => 
-        provider.name === providerName || provider.provider === providerName
-          ? {
-              ...provider,
-              access: {
-                ...provider.access,
-                status: provider.access.status === 'active' ? 'inactive' : 'active'
-              }
-            }
-          : provider
-      ));
+      // setAccessData(prev => prev.map(provider => 
+      //   provider.name === providerName || provider.provider === providerName
+      //     ? {
+      //         ...provider,
+      //         access: {
+      //           ...provider.access,
+      //           status: provider.status === 1 ? 'active':'inactive'
+      //         }
+      //       }
+      //     : provider
+      // ));
     } catch (error) {
       toast.error('Failed to update provider status', { theme });
     }
@@ -166,14 +172,20 @@ const AccessProviders = () => {
     return `${username}:${password}@${endpoint.replace('https://', '')}:${port}`;
   };
 
+  console.log("filterStatus",filterStatus);
+  
+
   // Filter providers
   const filteredProviders = accessData.filter(provider => {
     const name = provider.name || provider.provider || '';
     const matchesSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || provider.access.status === filterStatus;
+    const matchesStatus = filterStatus === 'all' || provider.status === filterStatus;
     return matchesSearch && matchesStatus;
   });
 
+
+  console.log("filteredProviders",filteredProviders);
+  
   // Stats calculation
   const stats = {
     total: accessData.length,
@@ -216,6 +228,12 @@ const AccessProviders = () => {
       danger: 'from-red-500 to-pink-500'
     }
   };
+
+  const getStatusValue = (status) => {
+  if (status === "active") return 1;
+  if (status === "inactive") return 2;
+  return 1; // for 'all'
+};
 
   const colors = themeColors[theme];
 
@@ -435,11 +453,14 @@ const AccessProviders = () => {
                     Status
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {['all', 'active', 'inactive'].map(status => (
+                    {['active', 'inactive'].map(status => (
                       <button
                         key={status}
-                        onClick={() => setFilterStatus(status)}
-                        className={`px-3 py-1.5 rounded-lg text-xs capitalize whitespace-nowrap ${
+                        onClick={() => {
+                          const value = getStatusValue(status);
+                          setFilterStatus(value);
+                            }}
+                           className={`px-3 py-1.5 rounded-lg text-xs capitalize whitespace-nowrap ${
                           filterStatus === status
                             ? theme === 'dark'
                               ? `bg-${status === 'active' ? 'green' : status === 'inactive' ? 'red' : 'blue'}-600 text-white`
@@ -476,45 +497,6 @@ const AccessProviders = () => {
                   </select>
                 </div>
                 
-                <div>
-                  <label className={`text-sm font-medium mb-2 block ${colors.text}`}>
-                    Quick Actions
-                  </label>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <button
-                      onClick={() => {
-                        setAccessData(prev => prev.map(p => ({
-                          ...p,
-                          access: { ...p.access, status: 'active' }
-                        })));
-                        toast.success('All providers activated!', { theme });
-                      }}
-                      className={`px-3 py-1.5 rounded-lg text-xs ${
-                        theme === 'dark'
-                          ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
-                          : 'bg-green-100 text-green-600 hover:bg-green-200'
-                      }`}
-                    >
-                      Activate All
-                    </button>
-                    <button
-                      onClick={() => {
-                        setAccessData(prev => prev.map(p => ({
-                          ...p,
-                          access: { ...p.access, status: 'inactive' }
-                        })));
-                        toast.info('All providers deactivated!', { theme });
-                      }}
-                      className={`px-3 py-1.5 rounded-lg text-xs ${
-                        theme === 'dark'
-                          ? 'bg-red-600/20 text-red-400 hover:bg-red-600/30'
-                          : 'bg-red-100 text-red-600 hover:bg-red-200'
-                      }`}
-                    >
-                      Deactivate All
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
           )}
@@ -580,11 +562,11 @@ const AccessProviders = () => {
                           <h3 className={`font-bold ${colors.text} truncate`}>{providerName}</h3>
                           <div className="flex items-center gap-2 mt-1 flex-wrap">
                             <span className={`text-xs px-2 py-0.5 rounded-full ${
-                              provider.access.status === 'active'
+                              provider.status === 1
                                 ? theme === 'dark' ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
                                 : theme === 'dark' ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600'
                             }`}>
-                              {provider.access.status === 'active' ? 'Active' : 'Inactive'}
+                              {provider.status === 'active' ? 'Active' : 'Inactive'}
                             </span>
                             <span className={`text-xs px-2 py-0.5 rounded-full ${
                               theme === 'dark' ? 'bg-gray-800 text-gray-300' : 'bg-gray-200 text-gray-700'
@@ -634,17 +616,18 @@ const AccessProviders = () => {
                         <button
                           onClick={() => handleToggleStatus(providerName)}
                           className={`py-2 px-3 rounded-lg text-xs font-medium flex items-center justify-center gap-1 ${
-                            provider.access.status === 'active'
+                            provider.status === 1
                               ? theme === 'dark'
-                                ? 'bg-red-600/20 text-red-400 hover:bg-red-600/30'
-                                : 'bg-red-100 text-red-600 hover:bg-red-200'
-                              : theme === 'dark'
-                                ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
+                               ? 'bg-green-600/20 text-green-400 hover:bg-green-600/30'
                                 : 'bg-green-100 text-green-600 hover:bg-green-200'
+                               
+                              : theme === 'dark'
+                                 ? 'bg-red-600/20 text-red-400 hover:bg-red-600/30'
+                                : 'bg-red-100 text-red-600 hover:bg-red-200'
                           }`}
                         >
-                          {provider.access.status === 'active' ? <FiLock className="w-3 h-3" /> : <FiUnlock className="w-3 h-3" />}
-                          {provider.access.status === 'active' ? 'Deactivate' : 'Activate'}
+                          {provider.status === 1 ? <FiLock className="w-3 h-3" /> : <FiUnlock className="w-3 h-3" />}
+                          {provider.status === 1 ? 'Activate':'Deactivate' }
                         </button>
                       </div>
                     </div>
@@ -688,11 +671,11 @@ const AccessProviders = () => {
                             <h3 className={`font-bold text-lg ${colors.text} truncate`}>{providerName}</h3>
                             <div className="flex flex-wrap gap-1.5">
                               <span className={`text-xs px-2 py-1 rounded-full ${
-                                provider.access.status === 'active'
+                                provider.status === 1
                                   ? theme === 'dark' ? 'bg-green-500/20 text-green-400' : 'bg-green-100 text-green-600'
                                   : theme === 'dark' ? 'bg-red-500/20 text-red-400' : 'bg-red-100 text-red-600'
                               }`}>
-                                {provider.access.status === 'active' ? 'Active' : 'Inactive'}
+                                {provider.status === 1 ? 'Active' : 'Inactive'}
                               </span>
                               <span className={`text-xs px-2 py-1 rounded-full ${
                                 theme === 'dark' ? 'bg-blue-500/20 text-blue-400' : 'bg-blue-100 text-blue-600'
@@ -905,7 +888,7 @@ const AccessProviders = () => {
                               <button
                                 onClick={() => handleToggleStatus(providerName)}
                                 className={`p-3 rounded-xl border ${
-                                  provider.access.status === 'active'
+                                  provider.status === 1
                                     ? theme === 'dark'
                                       ? 'border-red-500/30 bg-red-500/10 hover:bg-red-500/20'
                                       : 'border-red-200 bg-red-50 hover:bg-red-100'
@@ -914,13 +897,14 @@ const AccessProviders = () => {
                                       : 'border-green-200 bg-green-50 hover:bg-green-100'
                                 } flex flex-col items-center justify-center gap-2`}
                               >
-                                {provider.access.status === 'active' ? (
-                                  <FiLock className="w-5 h-5 text-red-400" />
-                                ) : (
+                                {provider.status === 'active' ? (
                                   <FiUnlock className="w-5 h-5 text-green-400" />
+                            
+                                ) : (
+                                        <FiLock className="w-5 h-5 text-red-400" />
                                 )}
                                 <span className="text-sm font-medium text-center">
-                                  {provider.access.status === 'active' ? 'Deactivate' : 'Activate'}
+                                  {provider.status === 1? 'Activate':'Deactivate' }
                                 </span>
                               </button>
                             </div>

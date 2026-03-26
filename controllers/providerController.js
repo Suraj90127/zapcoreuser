@@ -233,6 +233,8 @@ export const getActiveProviders = async (req, res) => {
     const userId = req.id;
 
     const access = await UserProviderAccess.findOne({ userId });
+    // console.log("access",access);
+    
 
     if (!access) {
       return res.status(200).json({
@@ -241,13 +243,15 @@ export const getActiveProviders = async (req, res) => {
       });
     }
 
-    const activeProviders = access.providers.filter(
-      p => p.status === 1
-    );
+    // const activeProviders = access.providers.filter(
+    //   p => p.status === 1
+    // );
+
+        // console.log("activeProviders",activeProviders);
 
     return res.status(200).json({
       status: true,
-      providers: activeProviders,
+      providers: access.providers,
     });
   } catch (error) {
     console.error("getActiveProviders error:", error);
