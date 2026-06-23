@@ -171,7 +171,7 @@ export const getLaunchUrlSeamless = async (req, res) => {
     const language = "en";
     const home_url = "https://yourwebsite.com/";
     const platform = "web";
-    const callback_url = "https://zapcore.live/api/huidu-seamless";
+    const callback_url = "https://playnosys.live/api/huidu-seamless";
 
     const proxy = {
       host: "64.79.234.241",

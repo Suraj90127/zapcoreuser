@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema(
         },
          by: { 
         type: String, 
-        default:"zapcore"
+        default:"playnosys"
         },
         email: { 
             type: String, 

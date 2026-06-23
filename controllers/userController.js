@@ -121,7 +121,7 @@ export const createUser = async (req, res, next) => {
             ipv6_address,
             isActive: 0,
             isdemo,
-            by:"zapcore",
+            by:"playnosys",
             role:"user",
             prefix, // 👈 auto generated
             key: generateUniqueKey(),
