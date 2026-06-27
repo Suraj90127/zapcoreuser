@@ -173,17 +173,18 @@ export const getLaunchUrlSeamless = async (req, res) => {
     const platform = "web";
     const callback_url = "https://playnosys.live/api/huidu-seamless";
 
-    const proxy = {
-      host: "64.79.234.241",
-      port: 6765,
+   const proxy = {
+      host: "154.6.83.203",
+      port: 6674,
       auth: {
-        username: "dgwkmaqa",
-        password: "05xvlisyqip7",
+        username: "trqjnemy",
+        password: "34pw1x8rcxr3",
       },
     };
 
+
     const proxyAgent = new HttpsProxyAgent(
-  "http://dgwkmaqa:05xvlisyqip7@64.79.234.241:6765"
+  "http://trqjnemy:34pw1x8rcxr3@154.6.83.203:6674"
 );
 
     /* ================= USER ================= */
