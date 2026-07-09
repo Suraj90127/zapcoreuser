@@ -158,11 +158,11 @@ const JSONViewer = ({ data }) => {
 
 // API Configuration
 const API_CONFIG = {
-  baseUrl: "https://api-docs.space/api",
-  resultbaseUrl: "https://api-docs.space/api",
+  baseUrl: "https://api-doc.space/api",
+  resultbaseUrl: "https://api-doc.space/api",
   cricketKey: "P18eCa60SONhiAazrFHG",
   zilliKey: "P18eCa60SONhiAazrFHG",
-  domain: "api-docs.space",
+  domain: "api-doc.space",
 };
 
 const API_STRUCTURE = {
@@ -991,12 +991,12 @@ const codeExamples = {
   GET: {
     javascript: (path, apiKey, isResultEndpoint) => `// Using Axios
 const axios = require('axios');
-const baseUrl = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'};
+const baseUrl = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'};
 
 axios.get(baseUrl + "${path}?key=${apiKey}", {
   headers: {
     "Content-Type": "application/json",
-    "x-domain": "api-docs.space"
+    "x-domain": "api-doc.space"
   }
 })
 .then(response => console.log(response.data))
@@ -1004,17 +1004,17 @@ axios.get(baseUrl + "${path}?key=${apiKey}", {
 
     python: (path, apiKey, isResultEndpoint) => `import requests
 
-base_url = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'}
+base_url = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'}
 url = base_url + "${path}"
 params = {"key": "${apiKey}"}
-headers = {"x-domain": "api-docs.space"}
+headers = {"x-domain": "api-doc.space"}
 
 response = requests.get(url, params=params, headers=headers)
 data = response.json()
 print(data)`,
 
     php: (path, apiKey, isResultEndpoint) => `<?php
-$baseUrl = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'};
+$baseUrl = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'};
 $client = new GuzzleHttp\\Client();
 
 try {
@@ -1022,7 +1022,7 @@ try {
         'query' => ['key' => '${apiKey}'],
         'headers' => [
             'Content-Type' => 'application/json',
-            'x-domain' => 'api-docs.space'
+            'x-domain' => 'api-doc.space'
         ]
     ]);
     
@@ -1037,18 +1037,18 @@ try {
       path,
       apiKey,
       isResultEndpoint,
-    ) => `curl -X GET "${isResultEndpoint ? "https://api-docs.space/api" : "https://api-docs.space/api"}${path}?key=${apiKey}" \\
-  -H "x-domain: api-docs.space"`,
+    ) => `curl -X GET "${isResultEndpoint ? "https://api-doc.space/api" : "https://api-doc.space/api"}${path}?key=${apiKey}" \\
+  -H "x-domain: api-doc.space"`,
   },
   POST: {
     javascript: (path, apiKey, bodyExample, isResultEndpoint) => `// Using Axios
 const axios = require('axios');
-const baseUrl = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'};
+const baseUrl = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'};
 
 axios.post(baseUrl + "${path}?key=${apiKey}", ${JSON.stringify(bodyExample, null, 2)}, {
   headers: {
     "Content-Type": "application/json",
-    "x-domain": "api-docs.space"
+    "x-domain": "api-doc.space"
   }
 })
 .then(response => console.log(response.data))
@@ -1058,10 +1058,10 @@ axios.post(baseUrl + "${path}?key=${apiKey}", ${JSON.stringify(bodyExample, null
 import json
 import { useSelector } from 'react-redux';
 
-base_url = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'}
+base_url = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'}
 url = base_url + "${path}"
 params = {"key": "${apiKey}"}
-headers = {"x-domain": "api-docs.space"}
+headers = {"x-domain": "api-doc.space"}
 payload = ${JSON.stringify(bodyExample, null, 2)}
 
 response = requests.post(url, params=params, json=payload, headers=headers)
@@ -1069,7 +1069,7 @@ data = response.json()
 print(data)`,
 
     php: (path, apiKey, bodyExample, isResultEndpoint) => `<?php
-$baseUrl = ${isResultEndpoint ? '"https://api-docs.space/api"' : '"https://api-docs.space/api"'};
+$baseUrl = ${isResultEndpoint ? '"https://api-doc.space/api"' : '"https://api-doc.space/api"'};
 $client = new GuzzleHttp\\Client();
 
 $payload = ${JSON.stringify(bodyExample, null, 2)};
@@ -1079,7 +1079,7 @@ try {
         'query' => ['key' => '${apiKey}'],
         'headers' => [
             'Content-Type' => 'application/json',
-            'x-domain' => 'api-docs.space'
+            'x-domain' => 'api-doc.space'
         ],
         'json' => $payload
     ]);
@@ -1096,8 +1096,8 @@ try {
       apiKey,
       bodyExample,
       isResultEndpoint,
-    ) => `curl -X POST "${isResultEndpoint ? "https://api-docs.space/api" : "https://api-docs.space/api"}${path}?key=${apiKey}" \\
-  -H "x-domain: api-docs.space" \\
+    ) => `curl -X POST "${isResultEndpoint ? "https://api-doc.space/api" : "https://api-doc.space/api"}${path}?key=${apiKey}" \\
+  -H "x-domain: api-doc.space" \\
   -H "Content-Type: application/json" \\
   -d '${JSON.stringify(bodyExample)}'`,
   },
@@ -1295,7 +1295,7 @@ export default function ApiDocsUI() {
     const domain = window.location.host;
 
     const text = `
-Doc Link: https://api-docs.space
+Doc Link: https://api-doc.space
 Domain: ${domain}
 API Key: ${user.key}
 `;
@@ -2822,7 +2822,7 @@ API Key: ${user.key}
                           <span
                             className={`font-semibold ${classes.text} bg-gradient-to-r from-blue-500 to-blue-600 bg-clip-text text-transparent`}
                           >
-                            https://api-docs.space
+                            https://api-doc.space
                           </span>
                         </div>
 

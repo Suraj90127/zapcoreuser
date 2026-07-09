@@ -36,7 +36,7 @@ app.use(
 
         connectSrc: [
           "'self'",
-          "https://api-docs.space",
+          "https://api-doc.space",
           "https://playnosys.live",
           "ws:",
           "wss:"
@@ -60,7 +60,7 @@ app.use(
       "http://localhost:3000", 
       "http://localhost:5173", 
       "http://localhost:5174", 
-      "https://api-docs.space", 
+      "https://api-doc.space", 
       "https://playnosys.live"],
     credentials: true,
   })
