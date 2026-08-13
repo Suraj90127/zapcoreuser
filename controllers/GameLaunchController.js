@@ -3,7 +3,7 @@ import GameList from "../models/gameListModel.js";
 import mongoose from "mongoose";
 import axios from "axios";
 import { GAME_CONFIG } from "./../config/gameConfig.js";
-import { aesEncrypt,aesDecrypt } from "../utils/aes.js";
+import { aesEncrypt, aesDecrypt } from "../utils/aes.js";
 import { hasProviderAccess } from "../utils/providerAccess.js";
 import UserProviderAccess from "../models/userProviderAccessModel.js";
 import User from "../models/UserModel.js";
@@ -85,7 +85,7 @@ export const getLunchGameDetails = async (req, res) => {
 export const getActiveProviders = async (req, res) => {
   try {
     const userId = req?.user?._id;
-    const {page, size} = req.query;
+    const { page, size } = req.query;
 
     if (!userId) {
       return res.status(400).json({
@@ -124,7 +124,7 @@ export const getActiveProviders = async (req, res) => {
       status: true,
       message: "Active providers fetched successfully",
       total_providers: totalProviders,
-      current_page:pageNumber,
+      current_page: pageNumber,
       per_page: limit,
       providers,
     });
@@ -145,8 +145,8 @@ export const getLaunchUrlSeamless = async (req, res) => {
   const { uid, key, playerid, opening_balance } = req.body;
 
   // console.log("session",session);
-  console.log("req.body",req.body);
-  
+  console.log("req.body", req.body);
+
 
   try {
     /* ================= VALIDATION ================= */
@@ -161,7 +161,7 @@ export const getLaunchUrlSeamless = async (req, res) => {
     /* ================= CONFIG ================= */
     const agency_uid = "1b6ad0c8122f6b07955595984682e752";
     // const aes_key = "ca51aaabb5e8725f29cd42aa29623b48";
-   const aes_key = Buffer.from(
+    const aes_key = Buffer.from(
       "ca51aaabb5e8725f29cd42aa29623b48",
       "utf8"   // 👈 VERY IMPORTANT
     );
@@ -173,19 +173,18 @@ export const getLaunchUrlSeamless = async (req, res) => {
     const platform = "web";
     const callback_url = "https://playnosys.live/api/huidu-seamless";
 
-   const proxy = {
-      host: "154.6.83.203",
-      port: 6674,
+    const proxy = {
+      host: "43.229.9.221",
+      port: 6490,
       auth: {
-        username: "trqjnemy",
-        password: "34pw1x8rcxr3",
+        username: "hwgdzunn",
+        password: "nd6xcb9pbl1v",
       },
     };
 
-
     const proxyAgent = new HttpsProxyAgent(
-  "http://trqjnemy:34pw1x8rcxr3@154.6.83.203:6674"
-);
+      "http://hwgdzunn:nd6xcb9pbl1v@43.229.9.221:6490"
+    );
 
     /* ================= USER ================= */
     const user = await User.findOne({ key }).session(session);
@@ -223,7 +222,7 @@ export const getLaunchUrlSeamless = async (req, res) => {
     const seamlessUsername = `${fundUsername}s`;
 
     // console.log("fundUsername",fundUsername);
-    
+
 
     /* ================= SUBUSER ================= */
     let subuser = await SubUser.findOne({
@@ -316,15 +315,15 @@ export const getLaunchUrlSeamless = async (req, res) => {
       return axios.post(
         "https://huidu.bet/game/v1",
         { agency_uid, timestamp, payload },
-       {
-        httpsAgent: proxyAgent,
-        timeout: 15000,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-          "Accept-Encoding": "identity",
-        },
-    }
+        {
+          httpsAgent: proxyAgent,
+          timeout: 15000,
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Accept-Encoding": "identity",
+          },
+        }
       );
     };
 
@@ -334,8 +333,8 @@ export const getLaunchUrlSeamless = async (req, res) => {
 
     let response = await launchGame(activeUsername, subuser.balance);
 
-    console.log("response",response);
-    
+    console.log("response", response);
+
 
     /* ---------- SUCCESS ---------- */
     if (response.data?.payload?.game_launch_url) {
@@ -422,7 +421,7 @@ export const getLaunchUrlSeamless = async (req, res) => {
       response = await launchGame(seamlessUsername, fund_balance);
 
       // console.log("response",response);
-      
+
 
       if (response.data?.payload?.game_launch_url) {
         await session.commitTransaction();
@@ -438,8 +437,8 @@ export const getLaunchUrlSeamless = async (req, res) => {
 
   } catch (error) {
     await session.abortTransaction();
-    console.log("error",error);
-    
+    console.log("error", error);
+
     return res.status(500).json({
       status: false,
       message: error.message,
@@ -504,7 +503,7 @@ export const getUserBalanceLocal = async (req, res) => {
           break;
         }
       }
-    } 
+    }
     // IPv4 check
     else {
       if (allowedIpv4.includes(requestIp)) {
@@ -793,10 +792,10 @@ export const getBetHistory = async (req, res) => {
 
 export const handleSeamlessCallback = async (req, res) => {
   try {
- const aes_key = Buffer.from(
-    "ca51aaabb5e8725f29cd42aa29623b48",
-    "utf8"   // 👈 VERY IMPORTANT
-  );
+    const aes_key = Buffer.from(
+      "ca51aaabb5e8725f29cd42aa29623b48",
+      "utf8"   // 👈 VERY IMPORTANT
+    );
 
     const currency_code = "INR";
     const callback_time = new Date();
@@ -805,7 +804,7 @@ export const handleSeamlessCallback = async (req, res) => {
     const encryptedPayload = req.body.payload;
 
     // console.log("encryptedPayload",encryptedPayload);
-    
+
     if (!encryptedPayload) {
       return res.json({ code: 1, msg: "Payload missing" });
     }
@@ -813,7 +812,7 @@ export const handleSeamlessCallback = async (req, res) => {
     const decrypted = aesDecrypt(encryptedPayload, aes_key);
 
     // console.log("decrypted",decrypted);
-    
+
     const data = JSON.parse(decrypted || "{}");
 
     if (!data) {
@@ -849,11 +848,11 @@ export const handleSeamlessCallback = async (req, res) => {
       //  const player_id = hf743aa006543214
       const firstNine = player_id.substring(0, 9);
       prefix = firstNine.substring(6);
-      console.log("prefix",prefix);
-      
+      console.log("prefix", prefix);
+
       prefixMember = player_id.substring(9);
-      console.log("prefixMember",prefixMember);
-      
+      console.log("prefixMember", prefixMember);
+
     }
 
     if (!serial_number || !player_id || !game_uid) {
@@ -994,12 +993,12 @@ export const processSingleGGR = async (
   // }
 
   const user = await User.findOne({ prefix });
-  if (!user){
+  if (!user) {
     return res.json({
-      message:"user not fund"
+      message: "user not fund"
     })
-    
-  } 
+
+  }
 
   const balanceBefore = Number(user.balance || 0); // 100
   const duepayBefore = Number(user.duepay || 0); // 90
@@ -1051,7 +1050,7 @@ export const processSingleGGR = async (
 
 export const handleBetLossGGR = async (req, res) => {
   // console.log("ssss");
-  
+
   try {
     /* ================= TIME SETUP ================= */
     const lessTime = moment()
@@ -1383,7 +1382,7 @@ export const setBalance = async (req, res) => {
           break;
         }
       }
-    } 
+    }
     // IPv4 exact match
     else {
       if (allowedIpv4.includes(requestIp)) {
